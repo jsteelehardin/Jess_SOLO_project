@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <title>Account</title>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+                <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+        </head>
+        <body>
+            
+            <!-- Error message section -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="container">
+                    <div class=flashes>
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endwith %}
+            <!-- End error message section -->
+            <div class="wrapper">
+                <h1 style="color: white;"> Welcome {{ session.first_name }} {{ session.last_name }} !!!!</h1>
+                <!-- Nav -->
+                <div class="dash-nav">
+                    
+                    <a class="btn btn-dash btn-warning" href="/dashboard" role="button">All Books</a>
+                    <a class="btn btn-dash btn-danger" href="/logout" role="button">Logout</a>
+                </div>
+                <div class="main">
+                    <!-- Left container -->
+                    <div class="container main-l">
+                        <h2>Update User</h2>
+                        <br>
+                        <br>
+                        <form class="main-l" action="/user/account/update" method="POST">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" value="{{ one_user.first_name }}" >
+                            <br>
+                            <br>
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" value="{{ one_user.last_name }}" >
+                            <br>
+                            <br>
+                            <label for="email">Email</label>
+                            <input type="text" name="email" value="{{ one_user.email }}" >
+                            <br>
+                            <br>
+                            <br>
+                            <button class="btn btn-dash btn-success" type="submit">submit</button>
+                        </form>
+                    </div>
+                    <!-- Right container -->
+                    <div class="container main-r">
+                        <h2>User's Books</h2>
+                        <br>
+                        <br>
+                        <table class="table">
+                        <tbody>
+                                {% for r in all_bookclubs %}
+                                {% if r.user_id == session.id %}
+                                <tr>
+                                    <td>
+                                        <a href="/bookclub/show/{{ r.id  }}">{{ r.title }}</a>
+                                        <p>{{ r.user_ids_who_favsubscribed | length }} favorite(s)</p>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-dash btn-success" href="/bookclub/edit/{{r.id}}" role="button">edit</a>
+                                        <form action="/bookclub/delete/{{r.id}}" method="POST">
+                                            <input type="hidden" name="id" value="{{r.id}}">
+                                            <button type="submit" class="btn btn-dash btn-danger">delete</button>
+                                        </form>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
+        </body>
+</html>

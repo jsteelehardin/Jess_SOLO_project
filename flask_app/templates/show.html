@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <title>Show</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h1 style="color: white;"> Welcome {{ user.first_name }} !!</h1>
+        <div class="nav">
+            <a class="btn btn-dash btn-primary" href="/user/account">Account</a>
+            <a class="btn btn-dash btn-warning" href="/dashboard">All Books</a>
+            <a class="btn btn-dash btn-danger" href="/logout">Logout</a>
+        </div>
+        <div class="main container">
+            <div class="container">
+                <h2>{{ one_bookclub.title }}</h2>
+                <br>
+                <h3> Added by {{ one_bookclub.creator.first_name }} {{ one_bookclub.creator.last_name }}</h3>
+                <br>
+                <table class="show_one_bookclub table">
+                    <tr>
+                        <td>Description:</td>
+                        <td>{{ one_bookclub.description }}</td>
+                    </tr>
+                    <tr>
+                        <br>
+                        <td>Users who favorited:</td>
+                        <td>
+                            {% for user_who_favsubscribed in one_bookclub.users_who_favsubscribed %}
+                            <p>{{ user_who_favsubscribed.first_name }} {{ user_who_favsubscribed.last_name }}</p> 
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
